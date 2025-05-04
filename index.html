@@ -1,193 +1,218 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeboraX Technologies</title>
+    <meta name="description" content="WeboraX Technologies - Empowering digital futures with innovative web, mobile, and cloud solutions.">
+    <meta name="keywords" content="web development, mobile app development, UI/UX design, cloud integration, IT consultancy, WeboraX Technologies">
+    <meta name="author" content="WeboraX Technologies">
+    <title>WeboraX Technologies - Empowering Digital Futures</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        .bg-dark { background-color: #1a2526; }
-        .text-cyan { color: #00c4cc; }
-        .bg-cyan { background-color: #00c4cc; }
-        .bg-cyan-dark { background-color: #00a0a6; }
-        .bg-dark-card { background-color: #2a3738; }
-        .animate-fade-in { animation: fadeIn 1s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        button:hover, a:hover { transition: all 0.3s ease; }
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(90deg, #FF6B35, #FF3E8D, #7B2CBF); }
+        .gradient-text { background: linear-gradient(90deg, #FF6B35, #FF3E8D, #7B2CBF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hover-scale { transition: transform 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.05); }
+        .section { opacity: 0; transition: opacity 0.5s ease; }
+        .section.visible { opacity: 1; }
     </style>
 </head>
-<body class="bg-dark text-white">
+<body class="bg-gray-100 text-gray-800">
     <!-- Navigation -->
-    <nav class="bg-dark text-gray-400 p-4 fixed w-full top-0 z-10">
+    <nav class="bg-white shadow-md p-4 fixed w-full top-0 z-10">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold text-white">WeboraX Technologies</h1>
-            <div class="space-x-4">
-                <a href="#home" class="hover:text-cyan transition">Home</a>
-                <a href="#services" class="hover:text-cyan transition">Services</a>
-                <a href="#portfolio" class="hover:text-cyan transition">Portfolio</a>
-                <a href="#about" class="hover:text-cyan transition">About</a>
-                <a href="#contact" class="hover:text-cyan transition">Contact</a>
+            <h1 class="text-2xl font-bold gradient-text">WeboraX Technologies</h1>
+            <div class="space-x-6">
+                <a href="#home" class="text-gray-600 hover:text-gray-800 transition">Home</a>
+                <a href="#about" class="text-gray-600 hover:text-gray-800 transition">About</a>
+                <a href="#services" class="text-gray-600 hover:text-gray-800 transition">Services</a>
+                <a href="#portfolio" class="text-gray-600 hover:text-gray-800 transition">Portfolio</a>
+                <a href="#careers" class="text-gray-600 hover:text-gray-800 transition">Careers</a>
+                <a href="#contact" class="text-gray-600 hover:text-gray-800 transition">Contact</a>
             </div>
         </div>
     </nav>
 
-    <!-- Homepage Section -->
-    <section id="home" class="h-screen flex items-center justify-center bg-dark">
-        <div class="text-center animate-fade-in">
-            <h1 class="text-5xl font-bold mb-4">We Build Web & App Solutions That Work</h1>
-            <p class="text-lg mb-6">WeboraX Technologies is your trusted partner for creating high-quality, scalable digital solutions for startups and businesses.</p>
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center gradient-bg text-white">
+        <div class="text-center animate__animated animate__fadeIn">
+            <h1 class="text-5xl md:text-6xl font-bold mb-4">Empowering Digital Futures</h1>
+            <p class="text-lg md:text-xl mb-8">WeboraX Technologies delivers innovative software solutions to transform your business.</p>
             <div class="space-x-4">
-                <a href="#contact" class="bg-transparent border border-white text-white px-6 py-2 rounded hover:bg-white hover:text-dark transition">Get a Quote</a>
-                <a href="#portfolio" class="bg-transparent border border-gray-500 text-gray-500 px-6 py-2 rounded hover:bg-gray-500 hover:text-white transition">See Portfolio</a>
+                <a href="#contact" class="bg-white text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition">Get Started</a>
+                <a href="#contact" class="border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-gray-800 transition">Hire Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-16 section">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-8 gradient-text">About Us</h2>
+            <div class="max-w-3xl mx-auto text-center">
+                <p class="text-lg mb-6">At WeboraX Technologies, we are passionate about leveraging technology to drive business success. Founded in 2025, our team of experts is dedicated to delivering cutting-edge solutions.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                        <h3 class="text-xl font-semibold mb-2">Our Mission</h3>
+                        <p class="text-gray-600">To empower businesses with innovative digital solutions that enhance growth and efficiency.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                        <h3 class="text-xl font-semibold mb-2">Our Vision</h3>
+                        <p class="text-gray-600">To be a global leader in software consultancy, transforming industries through technology.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                        <h3 class="text-xl font-semibold mb-2">Core Values</h3>
+                        <p class="text-gray-600">Innovation, Integrity, Collaboration, and Excellence.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="py-12">
+    <section id="services" class="py-16 bg-gray-50 section">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold mb-8 text-center">Our Services</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-dark-card p-6 rounded-lg animate-fade-in">
+            <h2 class="text-4xl font-bold text-center mb-8 gradient-text">Our Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                    <i class="fas fa-code text-3xl gradient-text mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2">Web Development</h3>
-                    <p class="text-gray-400">Custom websites tailored to your business needs, built with modern frameworks like React, Next.js, and PHP.</p>
+                    <p class="text-gray-600">Custom websites built with modern frameworks like React and Next.js.</p>
                 </div>
-                <div class="bg-dark-card p-6 rounded-lg animate-fade-in">
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                    <i class="fas fa-mobile-alt text-3xl gradient-text mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2">Mobile App Development</h3>
-                    <p class="text-gray-400">Native and cross-platform mobile apps for iOS and Android using Flutter and React Native.</p>
+                    <p class="text-gray-600">Cross-platform apps for iOS and Android using Flutter and React Native.</p>
                 </div>
-                <div class="bg-dark-card p-6 rounded-lg animate-fade-in">
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                    <i class="fas fa-paint-brush text-3xl gradient-text mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2">UI/UX Design</h3>
-                    <p class="text-gray-400">User-centric designs that are visually appealing and intuitive, crafted with tools like Figma and Adobe XD.</p>
+                    <p class="text-gray-600">User-centric designs crafted with Figma and Adobe XD.</p>
                 </div>
-                <div class="bg-dark-card p-6 rounded-lg animate-fade-in">
-                    <h3 class="text-xl font-semibold mb-2">Maintenance & Support</h3>
-                    <p class="text-gray-400">Ongoing support to keep your website or app running smoothly with updates, bug fixes, and performance optimization.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                    <i class="fas fa-cloud text-3xl gradient-text mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Cloud Integration</h3>
+                    <p class="text-gray-600">Seamless cloud solutions with AWS, Azure, and Google Cloud.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                    <i class="fas fa-users-cog text-3xl gradient-text mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">IT Consultancy</h3>
+                    <p class="text-gray-600">Expert guidance to optimize your tech strategy.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="bg-gray-800 py-12">
+    <section id="portfolio" class="py-16 section">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold mb-8 text-center">Our Portfolio</h2>
+            <h2 class="text-4xl font-bold text-center mb-8 gradient-text">Our Projects</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-dark-card p-4 rounded-lg animate-fade-in">
-                    <img src="project1.jpg" alt="Project 1" class="w-full h-40 object-cover rounded mb-4">
-                    <h3 class="text-xl font-semibold mb-2">E-Commerce Store</h3>
-                    <p class="mb-2 text-gray-400"><strong>Tech Stack:</strong> React, Node.js, MongoDB</p>
-                    <p class="mb-4 text-gray-400"><strong>Key Features:</strong> Product catalog, secure checkout, user authentication.</p>
-                    <a href="#" class="text-cyan hover:underline">View Project</a>
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                    <img src="project1.jpg" alt="E-Commerce Platform" class="w-full h-40 object-cover rounded mb-4">
+                    <h3 class="text-xl font-semibold mb-2">E-Commerce Platform</h3>
+                    <p class="text-gray-600 mb-4">A scalable online store with secure payments and user management.</p>
+                    <a href="#" class="text-blue-600 hover:underline">View Project</a>
                 </div>
-                <div class="bg-dark-card p-4 rounded-lg animate-fade-in">
-                    <img src="project2.jpg" alt="Project 2" class="w-full h-40 object-cover rounded mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Fitness App</h3>
-                    <p class="mb-2 text-gray-400"><strong>Tech Stack:</strong> Flutter, Firebase</p>
-                    <p class="mb-4 text-gray-400"><strong>Key Features:</strong> Workout tracking, meal planning, push notifications.</p>
-                    <a href="#" class="text-cyan hover:underline">View Project</a>
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                    <img src="project2.jpg" alt="Health App" class="w-full h-40 object-cover rounded mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Health App</h3>
+                    <p class="text-gray-600 mb-4">A mobile app for tracking fitness and wellness goals.</p>
+                    <a href="#" class="text-blue-600 hover:underline">View Project</a>
                 </div>
-                <div class="bg-dark-card p-4 rounded-lg animate-fade-in">
-                    <img src="project3.jpg" alt="Project 3" class="w-full h-40 object-cover rounded mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Business Website</h3>
-                    <p class="mb-2 text-gray-400"><strong>Tech Stack:</strong> Next.js, Tailwind CSS</p>
-                    <p class="mb-4 text-gray-400"><strong>Key Features:</strong> Responsive design, contact form, SEO optimization.</p>
-                    <a href="#" class="text-cyan hover:underline">View Project</a>
+                <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                    <img src="project3.jpg" alt="Corporate Website" class="w-full h-40 object-cover rounded mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Corporate Website</h3>
+                    <p class="text-gray-600 mb-4">A modern website for a corporate client with seamless navigation.</p>
+                    <a href="#" class="text-blue-600 hover:underline">View Project</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Us Section -->
-    <section id="about" class="py-12">
+    <!-- Careers Section -->
+    <section id="careers" class="py-16 bg-gray-50 section">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold mb-8 text-center">About Us</h2>
-            <div class="max-w-3xl mx-auto animate-fade-in">
-                <h3 class="text-2xl font-semibold mb-4">Our Vision & Mission</h3>
-                <p class="mb-6">At WeboraX Technologies, our vision is to empower businesses with innovative digital solutions that drive success. Our mission is to deliver high-quality web and mobile app development services that are affordable, reliable, and tailored to our clients’ needs.</p>
-                
-                <h3 class="text-2xl font-semibold mb-4">Our Story</h3>
-                <p class="mb-6">WeboraX Technologies was founded in 2025 by a team of passionate developers who saw a gap in the market for affordable, high-quality digital solutions. After years of working with startups and small businesses, we realized that many struggled to find reliable tech partners. That’s why we started WeboraX—to bridge that gap and help businesses bring their digital ideas to life.</p>
-                
-                <h3 class="text-2xl font-semibold mb-4">Core Values</h3>
-                <ul class="list-disc pl-5 mb-6 text-gray-400">
-                    <li><strong>Quality:</strong> We deliver solutions that meet the highest standards.</li>
-                    <li><strong>Trust:</strong> We build lasting relationships through transparency and reliability.</li>
-                    <li><strong>Innovation:</strong> We embrace the latest technologies to create cutting-edge solutions.</li>
-                </ul>
-                <div class="text-center">
-                    <a href="#contact" class="bg-transparent border border-gray-500 text-gray-500 px-6 py-2 rounded hover:bg-gray-500 hover:text-white transition">Let’s Work Together</a>
+            <h2 class="text-4xl font-bold text-center mb-8 gradient-text">Join Our Team</h2>
+            <div class="max-w-3xl mx-auto text-center">
+                <p class="text-lg mb-6">We’re always looking for talented individuals to join WeboraX Technologies. Explore our openings below!</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                        <h3 class="text-xl font-semibold mb-2">Frontend Developer</h3>
+                        <p class="text-gray-600 mb-4">2+ years of experience with React and Tailwind CSS.</p>
+                        <a href="#contact" class="text-blue-600 hover:underline">Apply Now</a>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                        <h3 class="text-xl font-semibold mb-2">UI/UX Design Intern</h3>
+                        <p class="text-gray-600 mb-4">Passionate about design? Join us for a 3-month internship.</p>
+                        <a href="#contact" class="text-blue-600 hover:underline">Apply Now</a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="bg-gray-800 py-12">
+    <!-- Contact Us Section -->
+    <section id="contact" class="py-16 section">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold mb-8 text-center">Contact Us</h2>
-            <div class="max-w-md mx-auto bg-dark-card p-6 rounded-lg animate-fade-in">
-                <form action="contact.php" method="POST">
-                    <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 mb-4 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400">
-                    <input type="email" name="email" placeholder="your.email@example.com" required class="w-full p-3 mb-4 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400">
-                    <input type="text" name="subject" placeholder="Subject" required class="w-full p-3 mb-4 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400">
-                    <textarea name="message" placeholder="Your Message" required class="w-full p-3 mb-4 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400 h-32"></textarea>
-                    <button type="submit" class="w-full bg-transparent border border-gray-500 text-gray-500 p-3 rounded hover:bg-gray-500 hover:text-white transition"><i class="fas fa-paper-plane mr-2"></i>Send Message</button>
+            <h2 class="text-4xl font-bold text-center mb-8 gradient-text">Get in Touch</h2>
+            <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+                <form id="contact-form">
+                    <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 mb-4 border rounded text-gray-800">
+                    <input type="email" name="email" placeholder="Your Email" required class="w-full p-3 mb-4 border rounded text-gray-800">
+                    <textarea name="message" placeholder="Your Message" required class="w-full p-3 mb-4 border rounded text-gray-800 h-32"></textarea>
+                    <button type="submit" class="w-full bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 text-white p-3 rounded hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 transition">Send Message</button>
                 </form>
             </div>
-            <div class="text-center mt-6 text-gray-400">
-                <p><i class="fas fa-envelope mr-2"></i>Email: info@weborax.com</p>
-                <p><i class="fas fa-phone mr-2"></i>Phone: +1 (555) 123-4567</p>
-                <p><i class="fab fa-whatsapp mr-2"></i><a href="https://wa.me/15551234567" target="_blank" class="text-cyan hover:underline">Chat on WhatsApp</a></p>
+            <div class="text-center mt-6">
+                <p class="text-gray-600 mb-2"><i class="fas fa-envelope mr-2"></i>Email: info@weborax.com</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="https://linkedin.com/company/weborax-technologies" target="_blank" class="text-gray-600 hover:gradient-text transition"><i class="fab fa-linkedin fa-2x"></i></a>
+                    <a href="https://twitter.com/weboraxtech" target="_blank" class="text-gray-600 hover:gradient-text transition"><i class="fab fa-twitter fa-2x"></i></a>
+                    <a href="https://instagram.com/weboraxtech" target="_blank" class="text-gray-600 hover:gradient-text transition"><i class="fab fa-instagram fa-2x"></i></a>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark py-6">
+    <footer class="bg-gray-800 text-white py-6">
         <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400">© 2025 WeboraX Technologies. All rights reserved.</p>
+            <p class="mb-2">© 2025 WeboraX Technologies. All Rights Reserved.</p>
+            <p><a href="#privacy" class="hover:gradient-text transition">Privacy Policy</a> | <a href="#terms" class="hover:gradient-text transition">Terms and Conditions</a></p>
         </div>
     </footer>
+
+    <script>
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Scroll Animations
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible', 'animate__animated', 'animate__fadeInUp');
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => observer.observe(section));
+
+        // Contact Form (Basic Handling)
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Message sent successfully! We will get back to you soon.');
+            e.target.reset();
+        });
+    </script>
 </body>
 </html>
