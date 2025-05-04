@@ -19,6 +19,7 @@
         .hover-scale:hover { transform: scale(1.05); }
         .section { opacity: 0; transition: opacity 0.5s ease; }
         .section.visible { opacity: 1; }
+        .footer-dark { background-color: #1a2526; }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -180,10 +181,43 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-6">
-        <div class="container mx-auto px-4 text-center">
-            <p class="mb-2">© 2025 WeboraX Technologies. All Rights Reserved.</p>
-            <p><a href="#privacy" class="hover:gradient-text transition">Privacy Policy</a> | <a href="#terms" class="hover:gradient-text transition">Terms and Conditions</a></p>
+    <footer class="footer-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center mb-6">
+                <a href="#contact" class="flex items-center bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 transition">
+                    <span>Send Message</span>
+                    <i class="fas fa-paper-plane ml-2"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+                <div>
+                    <h3 class="text-2xl font-bold gradient-text mb-4">WeboraX</h3>
+                    <p class="text-gray-400">Empowering Digital Futures</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gray-400 hover:gradient-text transition">About</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:gradient-text transition">Services</a></li>
+                        <li><a href="#portfolio" class="text-gray-400 hover:gradient-text transition">Portfolio</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#services" class="text-gray-400 hover:gradient-text transition">Web Development</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:gradient-text transition">Mobile Apps</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:gradient-text transition">Cloud Solutions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contact</h3>
+                    <p class="text-gray-400 mb-2">contact@weborax.com</p>
+                    <p class="text-gray-400 mb-2">+1 (555) 123-4567</p>
+                    <p class="text-gray-400">123 Tech Street, Digital City</p>
+                </div>
+            </div>
+            <p class="text-center text-gray-400 mt-8">© 2025 WeboraX Technologies. All rights reserved.</p>
         </div>
     </footer>
 
