@@ -1,0 +1,25 @@
+<?php
+session_start();
+require_once 'config.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $subject = filter_var($_POST['subject'], FILTER_SANITIZE_STRING);
+    $message = filter_var($_POST['message'], FILTER_SANITIZE_STRING);
+
+    if ($name && $email && $subject && $message && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        try {
+            $stmt = $conn->prepare("INSERT INTO messages (name, email, subject, message, created_at) VALUES (?, ?, ?, ?, NOW())");
+            $stmt->execute([$name, $email, $subject, $message]);
+            $_SESSION['contact_success'] = "Message sent successfully!";
+        } catch (PDOException $e) {
+            $_SESSION['contact_error'] = "Failed to send message: " . $e->getMessage();
+        }
+    } else {
+        $_SESSION['contact_error'] = "Please fill all fields correctly.";
+    }
+}
+header('Location: index.html#contact');
+exit;
+?>
